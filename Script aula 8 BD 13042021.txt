@@ -1,35 +1,82 @@
-/*EXECUTADOS-INICIO*/CREATETABLEIFNOTEXISTSMedicos(codigo_medicoINTEGERPRIMARYKEY,CRMVARCHAR(20)NOTNULLUNIQUE,nomeVARCHAR(120)NOTNULL,enderecoVARCHAR(120)NOTNULL,telefoneVARCHAR(15),dt_nascDATE,hr_trabalhoVARCHAR(30)NOTNULL);INSERTINTOMedicosVALUES(1,'123','DrauzioVarela','RuaFantastico,1','11-2222-3333','01/02/1952','Manhã'),(2,'234','ChapatinhoChaves','RuadoBarril,2','22-2222-3334','28/03/1932','Manhã'),(3,'345','Whoiam','RuaTardis,42','11-2222-3335','10/08/1918','Tarde'),(4,'456','MeredithGrey','RuaGrey,17','11-2222-3337','21/11/1982','Tarde'),(5,'567','FredMercury','RuadaRainha,100','11-2222-3318','30/04/1963','Noite');SELECT*FROMMedicos;CREATETABLEIFNOTEXISTSConvenio(codigo_convenioINTEGERPRIMARYKEY,nomeVARCHAR(60)NOTNULL,reg_ansINTEGERNOTNULLUNIQUE,cnpjVARCHAR(18)NOTNULLUNIQUE,enderecoVARCHAR(120)NOTNULL);INSERTINTOConvenioVALUES(1,'UNIMED','987','16.775.918/0001-42','Ruaa'),(2,'FRG','876','16.775.918/0001-43','Ruab'),(3,'SULAMERICA','765','16.775.918/0001-44','Ruac'),(4,'AMIL','654','16.775.918/0001-45','Ruad');SELECT*FROMConvenio;CREATETABLEIFNOTEXISTSCobertura(codigo_coberturaINTEGERPRIMARYKEY,percentualNUMERIC(5,2)NOTNULL,descricaoVARCHAR(120)NOTNULL,codigo_convenioINTEGERNOTNULLREFERENCESConvenio,CHECK(percentualBETWEEN'0'AND'100')
+/*EXECUTADOS-INICIO*/CREATETABLEIFNOTEXISTSMedicos(codigo_medicoINTEGERPRIMARYKEY,CRMVARCHAR(20)NOTNULLUNIQUE,nomeVARCHAR(120)NOTNULL,enderecoVARCHAR(120)NOTNULL,telefoneVARCHAR(15),
+dt_nascDATE,hr_trabalhoVARCHAR(30)NOTNULL);INSERTINTOMedicosVALUES(1,'123','DrauzioVarela','RuaFantastico,1','11-2222-3333','01/02/1952','ManhÃ£'),(2,'234','ChapatinhoChaves','RuadoBarril,2','22-2222-3334','28/03/1932','ManhÃ£'),(3,'345','Whoiam','RuaTardis,42','11-2222-3335','10/08/1918','Tarde'),(4,'456','MeredithGrey','RuaGrey,17','11-2222-3337','21/11/1982','Tarde'),(5,'567','FredMercury','RuadaRainha,100','11-2222-3318','30/04/1963','Noite');SELECT*FROMMedicos;CREATETABLEIFNOTEXISTSConvenio(codigo_convenioINTEGERPRIMARYKEY,nomeVARCHAR(60)NOTNULL,reg_ansINTEGERNOTNULLUNIQUE,
+cnpjVARCHAR(18)NOTNULLUNIQUE,enderecoVARCHAR(120)NOTNULL);INSERTINTOConvenioVALUES(1,'UNIMED','987','16.775.918/0001-42','Ruaa'),(2,'FRG','876','16.775.918/0001-43','Ruab'),(3,'SULAMERICA','765','16.775.918/0001-44','Ruac'),(4,'AMIL','654','16.775.918/0001-45','Ruad');SELECT*FROMConvenio;CREATETABLEIFNOTEXISTSCobertura(codigo_coberturaINTEGERPRIMARYKEY,percentualNUMERIC(5,2)NOTNULL,descricaoVARCHAR(120)NOTNULL,
+codigo_convenioINTEGERNOTNULLREFERENCESConvenio,CHECK(percentualBETWEEN'0'AND'100')
 );
 
 
-INSERTINTOCoberturaVALUES(1,25,'PLANOBÁSICO-UNIMED',1),(2,50,'PLANOINTERMEDIÁRIO-UNIMED',1),(3,90,'PLANOLUXO-UNIMED',1),(4,50,'PLANOBÁSICO-FRG',2),(5,100,'PLANOULTIMATE-FRG',2),(6,25,'PLANOBÁSICO-SULAMÉRICA',3),(7,70,'PLANOADVANCED-SULAMÉRICA',3),(8,25,'PLANOBÁSICO-AMIL',4),(9,50,'PLANOEXECUTIVE-AMIL',4);SELECT*FROMCobertura;CREATETABLEIFNOTEXISTSPacientes(codigo_pacienteINTEGERPRIMARYKEY,nomeVARCHAR(120)NOTNULL,identidadeVARCHAR(30)NOTNULL,cpfVARCHAR(14)NOTNULLUNIQUE,enderecoVARCHAR(120)NOTNULL,telefoneVARCHAR(15),dt_nascDATE,codigo_convenioINTEGERREFERENCESConvenio,codigo_coberturaINTEGERREFERENCESCobertura);INSERTINTOPacientesVALUES(1,'AbelGenesis','1230','1234','RuaA','123','10/01/2001',1,1),(2,'CainGenesis','1239','1235','RuaB','124','09/02/2002',1,2),(3,'ErnestoCabral','1238','1236','RuaC','125','08/03/2003',1,3),(4,'AlvaresPaiva','1237','1237','RuaD','126','07/04/2004',2,4),(5,'JucelinoDamião','1236','1238','RuaE','127','06/05/2005',2,5),(6,'MariaWalt','1235','1239','RuaF','128','05/06/2006',3,6),(7,'HebertMiranda','1234','1230','RuaG','129','04/07/2007',3,7),(8,'EdisonOuro','1233','1231','RuaH','120','03/08/2008',4,8),(9,'FaustoSilva','1232','1232','RuaI','121','02/09/2009',4,9),(10,'MelissaPassos','1231','1233','RuaJ','122','01/10/2010',NULL,NULL);
+INSERTINTOCoberturaVALUES(1,25,'PLANOBÃSICO-UNIMED',1),(2,50,'PLANOINTERMEDIÃRIO-UNIMED',1),(3,90,'PLANOLUXO-UNIMED',1),(4,50,'PLANOBÃSICO-FRG',2),(5,100,
+'PLANOULTIMATE-FRG',2),(6,25,'PLANOBÃSICO-SULAMÃ‰RICA',3),(7,70,'PLANOADVANCED-SULAMÃ‰RICA',3),(8,25,'PLANOBÃSICO-AMIL',4),(9,50,'PLANOEXECUTIVE-AMIL',4);SELECT*FROMCobertura;CREATETABLEIFNOTEXISTSPacientes(codigo_pacienteINTEGERPRIMARYKEY,nomeVARCHAR(120)NOTNULL,identidadeVARCHAR(30)NOTNULL,
+cpfVARCHAR(14)NOTNULLUNIQUE,enderecoVARCHAR(120)NOTNULL,telefoneVARCHAR(15),dt_nascDATE,
+codigo_convenioINTEGERREFERENCESConvenio,codigo_coberturaINTEGERREFERENCESCobertura);INSERTINTOPacientes
+VALUES(1,'AbelGenesis','1230','1234','RuaA','123','10/01/2001',1,1),(2,'CainGenesis','1239','1235','RuaB','124','09/02/2002',1,2),(3,'ErnestoCabral','1238','1236','RuaC','125','08/03/2003',1,3),(4,'AlvaresPaiva','1237','1237','RuaD','126','07/04/2004',2,4),(5,'JucelinoDamiÃ£o','1236','1238','RuaE','127','06/05/2005',2,5),(6,'MariaWalt','1235','1239','RuaF','128','05/06/2006',3,6),(7,'HebertMiranda','1234','1230','RuaG','129','04/07/2007',3,7),(8,'EdisonOuro','1233','1231','RuaH','120','03/08/2008',4,8),(9,'FaustoSilva','1232','1232','RuaI','121','02/09/2009',4,9),(10,'MelissaPassos','1231','1233','RuaJ','122','01/10/2010',NULL,NULL);
 
 
 
-SELECT*FROMPACIENTES;CREATETABLEIFNOTEXISTSMedicamentos(codigo_medicamentoINTEGERPRIMARYKEY,nome_medicamentoVARCHAR(120)NOTNULL,principio_ativoVARCHAR(60)NOTNULL,dosagemVARCHAR(60)NOTNULL,reg_anvisaINTEGERUNIQUE);INSERTINTOMedicamentosVALUES(1,'TYLENOL','PA-11','1GOTAPORKG',1234),(2,'ASPIRINA','PA-12','1CPDE8/8HORASCASODOR',1235),(3,'DORIL','PA-13','1CPDE8/8HORASCASODOR',1236),(4,'VICK','PA-14','APLICARNASCOSTASANOITEANTESDEDORMIR',1237),(5,'VODOL','PA-15','APLICAR2XAODIANASÁREASIRRITADAS',1238),(6,'VONAU','PA-16','1CPCASOMALESTAR',1239),(7,'CELERGIN','PA-17','1CPCASOREAÇÃOALÉRGICA',1240),(8,'VIAGRA','PA-18','1CP30MINANTESDARELAÇÃO',1241),(9,'CENTRUM','PA-19','1CPAODIAAPÓSAREFEIÇÃO',1242),(10,'BENEGRIPE','PA-20','1CPPORDIA',1243);SELECT*FROMMedicamentos;CREATETABLEConsultas(codigo_consultaINTEGERPRIMARYKEY,dt_consultaDATENOTNULL,descritivoVARCHAR(250)NOTNULL,codigo_medicoINTEGERNOTNULLREFERENCESMedicos,codigo_pacienteINTEGERNOTNULLREFERENCESPacientes);INSERTINTOConsultasVALUES(1,'01/04/2021','ATENDIMENTOPADRÃO1',1,1),(2,'01/04/2021','ATENDIMENTOPADRÃO2',3,2),(3,'02/04/2021','ATENDIMENTOPADRÃO3',1,3),(4,'02/04/2021','ATENDIMENTOPADRÃO4',2,1),(5,'04/04/2021','ATENDIMENTOPADRÃO5',2,4),(6,'05/04/2021','ATENDIMENTOPADRÃO6',4,5),(7,'07/04/2021','ATENDIMENTOPADRÃO7',2,2),(8,'07/04/2021','ATENDIMENTOPADRÃO8',3,3);SELECT*FROMConsultas;CREATETABLEMedicamentos_consulta(codigo_medicamentoINTEGERNOTNULLREFERENCESMedicamentos,codigo_consultaINTEGERNOTNULLREFERENCESConsultas,quantidadeINTEGERNOTNULL,PRIMARYKEY(codigo_medicamento,codigo_consulta));
-
-
-
-
-INSERTINTOMedicamentos_consultaVALUES(1,1,2),(2,1,1),(3,1,3),(4,5,4),(5,5,2),(6,5,1),(5,7,5),(7,3,4),(10,2,1),(9,4,2);SELECT*FROMMedicamentos_consulta;/*EXECUTADOS-FIM*//*GerarrelatóriodeConvênioseCoberturas*/SELECTc.nome,c.reg_ans,cb.percentual,cb.descricaoFROMConvenioc,CoberturacbWHEREc.codigo_convenio=cb.codigo_convenioORDERBYc.nome,cb.percentual;SELECTc.nome,c.reg_ans,cb.percentual,cb.descricaoFROMConveniocINNERJOINCoberturacbONc.codigo_convenio=cb.codigo_convenio;/*MostrarquaisConvêniospossuemcorbeturasmaioresque50%*/SELECTc.nome,c.reg_ans,cb.percentual,cb.descricaoFROMConvenioc,CoberturacbWHEREc.codigo_convenio=cb.codigo_convenioANDcb.percentual>50ORDERBYc.nome,cb.percentual;/*GerarumrelatóriocomospacientescomconvenioUnimedemostrarsuacobertura*/SELECTp.nome,c.nome,cb.descricao,cb.percentualFROMPacientesp,Convenioc,CoberturacbWHEREp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaANDc.nome='UNIMED'ORDERBYp.nome;
-
-
-
-/*Listeosmédicosqueatenderampacientesentreosdias1ºe3deAbrilde2021,mostrandoquaispacientes,conveniosecoberturas*/SELECTm.nome,m.crm,cs.dt_consulta,p.nome,c.nome,cb.descricaoFROMMedicosm,Consultascs,Pacientesp,Convenioc,CoberturacbWHEREm.codigo_medico=cs.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaANDcs.dt_consultaBETWEEN'01/04/2021'AND'03/04/2021'ORDERBYcs.dt_consulta,m.nome;/*MostreototaldepacientesdoconvênioUnimed*/SELECTc.nome,COUNT(p.codigo_paciente)FROMConvenioc,PacientespWHEREc.codigo_convenio=p.codigo_convenioANDc.nome='UNIMED'GROUPBYc.nome;/*Mostreototaldepacientesporconvêniodomaiorparaomenor*/SELECTc.nome,COUNT(p.codigo_paciente)AS"Quantidade"FROMConvenioc,PacientespWHEREc.codigo_convenio=p.codigo_convenioGROUPBYc.nomeORDERBY"Quantidade"DESC,c.nomeASC;/*ListarpacientesatendidospeloMédicoDrázio*/SELECTm.nome,cs.dt_consulta,p.nome,c.nome,cb.descricao,cb.percentualFROMMedicosm,Consultascs,Pacientesp,Convenioc,CoberturacbWHEREm.codigo_medico=cs.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaANDm.nomeLIKE'Drauz%'ORDERBYcs.dt_consulta,p.nome;/*Listeosmedicamentosreceitadospormédicosquenasceramantesde1960,mostrandoparaquaispacientesestesmedicamentosforamreceitados*/
-
-
-
-SELECTme.nome_medicamento,mc.quantidade,m.nomeAS"Médico",m.dt_nasc,p.nomeAS"Paciente"FROMMedicamentosme,Medicosm,Pacientesp,Medicamentos_consultamc,Consultascs
-WHEREme.codigo_medicamento=mc.codigo_medicamentoANDmc.codigo_consulta=cs.codigo_consultaANDcs.codigo_medico=m.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDm.dt_nasc<'01/01/1960'ORDERBYm.nome,me.nome_medicamento;/*Listeototaldeconsultaspordia*/SELECTdt_consulta,COUNT(codigo_consulta)FROMConsultasGROUPBYdt_consultaORDERBYdt_consulta;/*QualamédiadeconsultaspordianomêsdeAbrilde2021*/SELECTCAST(AVG(valor)ASNUMERIC(9,2))FROM(SELECTCOUNT(codigo_consulta)ASvalorFROMConsultasWHEREdt_consultaBETWEEN'01/04/2021'AND'30/04/2021'GROUPBYdt_consulta)ASmediaSELECTROUND(AVG(valor),2)FROM(SELECTCOUNT(codigo_consulta)ASvalorFROMConsultasWHEREdt_consultaBETWEEN'01/04/2021'AND'30/04/2021'GROUPBYdt_consulta)ASmedia/*Quaismedicamentosnuncaforamreceitados*/SELECTme.nome_medicamento,me.principio_ativo,me.reg_anvisaFROMMedicamentosmeLEFTJOINMedicamentos_consultamcONme.codigo_medicamento=mc.codigo_medicamentoWHEREmc.codigo_consultaISNULL;/*Quaisosmedicamentosreceitadosparapacientescompercentualdecoberturainferiora75%,mostreonomedomédico,adatadaconsultaeoconvênio*/
+SELECT*FROMPACIENTES;CREATETABLEIFNOTEXISTSMedicamentos(codigo_medicamentoINTEGERPRIMARYKEY,nome_medicamentoVARCHAR(120)NOTNULL,principio_ativoVARCHAR(60)NOTNULL,
+dosagemVARCHAR(60)NOTNULL,reg_anvisaINTEGERUNIQUE);INSERTINTOMedicamentosVALUES(1,'TYLENOL','PA-11','1GOTAPORKG',1234),(2,'ASPIRINA','PA-12','1CPDE8/8HORASCASODOR',1235),
+(3,'DORIL','PA-13','1CPDE8/8HORASCASODOR',1236),(4,'VICK','PA-14','APLICARNASCOSTASANOITEANTESDEDORMIR',1237),(5,'VODOL','PA-15','APLICAR2XAODIANASÃREASIRRITADAS',1238),
+(6,'VONAU','PA-16','1CPCASOMALESTAR',1239),(7,'CELERGIN','PA-17','1CPCASOREAÃ‡ÃƒOALÃ‰RGICA',1240),(8,'VIAGRA','PA-18','1CP30MINANTESDARELAÃ‡ÃƒO',1241),(9,'CENTRUM','PA-19','1CPAODIAAPÃ“SAREFEIÃ‡ÃƒO',1242),(10,'BENEGRIPE','PA-20','1CPPORDIA',1243);SELECT*FROMMedicamentos;CREATETABLEConsultas(codigo_consultaINTEGERPRIMARYKEY,dt_consultaDATENOTNULL,descritivoVARCHAR(250)NOTNULL,
+codigo_medicoINTEGERNOTNULLREFERENCESMedicos,codigo_pacienteINTEGERNOTNULLREFERENCESPacientes);INSERTINTOConsultasVALUES(1,'01/04/2021','ATENDIMENTOPADRÃƒO1',1,1),(2,'01/04/2021','ATENDIMENTOPADRÃƒO2',3,2),(3,'02/04/2021','ATENDIMENTOPADRÃƒO3',1,3),(4,'02/04/2021','ATENDIMENTOPADRÃƒO4',2,1),(5,'04/04/2021','ATENDIMENTOPADRÃƒO5',2,4),
+(6,'05/04/2021','ATENDIMENTOPADRÃƒO6',4,5),(7,'07/04/2021','ATENDIMENTOPADRÃƒO7',2,2),(8,'07/04/2021','ATENDIMENTOPADRÃƒO8',3,3);SELECT*FROMConsultas;CREATETABLEMedicamentos_consulta(codigo_medicamentoINTEGERNOTNULLREFERENCESMedicamentos,
+codigo_consultaINTEGERNOTNULLREFERENCESConsultas,quantidadeINTEGERNOTNULL,PRIMARYKEY(codigo_medicamento,codigo_consulta));
 
 
 
 
+INSERTINTOMedicamentos_consultaVALUES(1,1,2),(2,1,1),(3,1,3),(4,5,4),(5,5,2),(6,5,1),(5,7,5),(7,3,4),(10,2,1),(9,4,2);SELECT*FROMMedicamentos_consulta;/*EXECUTADOS-FIM*//*GerarrelatÃ³riodeConvÃªnioseCoberturas*/SELECTc.nome,c.reg_ans,cb.percentual,cb.descricaoFROMConvenioc,
+CoberturacbWHEREc.codigo_convenio=cb.codigo_convenioORDERBYc.nome,cb.percentual;SELECTc.nome,c.reg_ans,cb.percentual,cb.descricao
+FROMConveniocINNERJOINCoberturacbONc.codigo_convenio=cb.codigo_convenio;/*MostrarquaisConvÃªniospossuemcorbeturasmaioresque50%*
+/SELECTc.nome,c.reg_ans,cb.percentual,cb.descricaoFROMConvenioc,CoberturacbWHEREc.codigo_convenio=cb.codigo_convenioANDcb.percentual>50ORDERBYc.nome,cb.percentual;
+/*GerarumrelatÃ³riocomospacientescomconvenioUnimedemostrarsuacobertura*/SELECTp.nome,c.nome,cb.descricao,cb.percentual
+FROMPacientesp,Convenioc,CoberturacbWHEREp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaANDc.nome='UNIMED'ORDERBYp.nome;
 
 
 
-SELECTme.nome_medicamento,p.nome,c.nome,cb.descricao,cb.percentual,m.nome,cs.dt_consultaFROMMedicamentosme,Pacientesp,Convenioc,Coberturacb,Medicosm,Consultascs,Medicamentos_consultamcWHEREme.codigo_medicamento=mc.codigo_medicamentoANDmc.codigo_consulta=cs.codigo_consultaAND
-cs.codigo_medico=m.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaANDcb.percentual<75;/*MostrequantasconsultascadapacientequetomaAspirinafezduranteoanode2021*/SELECTp.codigo_paciente,p.nome,COUNT(cs.codigo_consulta)FROMPacientesp,Consultascs,Medicamentosme,Medicamentos_consultamcWHEREp.codigo_paciente=cs.codigo_pacienteANDcs.codigo_consulta=mc.codigo_consultaANDmc.codigo_medicamento=me.codigo_medicamentoANDme.nome_medicamento='ASPIRINA'ANDcs.dt_consultaBETWEEN'01/01/2021'AND'31/12/2021'GROUPBYp.codigo_paciente;/*ComandoparalistartodasastabelasdoBanco*/SELECTtable_nameFROMinformation_schema.tablesWHEREtable_schema='public'ORDERBYtable_name;/*ListeosmedicamentosreceitadosparapacientesquenãopossuemConvênio*/INSERTINTOConsultasVALUES(9,'08/04/2021','ATENDIMENTOPADRÃO9',3,10);INSERTINTOMedicamentos_consultaVALUES(10,9,4),(1,9,1),(3,9,2);SELECTme.nome_medicamento,p.nomeFROMMedicamentosme,Pacientesp,Consultascs,Medicamentos_consultamcWHEREme.codigo_medicamento=mc.codigo_medicamentoANDmc.codigo_consulta=cs.codigo_consultaANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenioISNULL;/*QuaismédicosfizerammaisconsultasqueoMédicoDrauzio*/SELECT*FROM(SELECTm.nomeAS"Nome",COUNT(cs.codigo_consulta)as"Total"FROMMedicosm,ConsultascsWHEREm.codigo_medico=cs.codigo_medicoGROUPBYm.nome)AS"Resultado"
+/*ListeosmÃ©dicosqueatenderampacientesentreosdias1Âºe3deAbrilde2021,mostrandoquaispacientes,conveniosecoberturas*/
+SELECTm.nome,m.crm,cs.dt_consulta,p.nome,c.nome,cb.descricaoFROMMedicosm,Consultascs,Pacientesp,Convenioc,
+CoberturacbWHEREm.codigo_medico=cs.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_cobertura
+ANDcs.dt_consultaBETWEEN'01/04/2021'AND'03/04/2021'ORDERBYcs.dt_consulta,m.nome;/*MostreototaldepacientesdoconvÃªnioUnimed*/SELECTc.nome,COUNT(p.codigo_paciente)
+FROMConvenioc,PacientespWHEREc.codigo_convenio=p.codigo_convenioANDc.nome='UNIMED'GROUPBYc.nome;/*MostreototaldepacientesporconvÃªniodomaiorparaomenor*
+
+/SELECTc.nome,COUNT(p.codigo_paciente)AS"Quantidade"FROMConvenioc,PacientespWHEREc.codigo_convenio=p.codigo_convenioGROUPBYc.nomeORDERBY"Quantidade"DESC,c.nomeASC;
+/*ListarpacientesatendidospeloMÃ©dicoDrÃ¡zio*/SELECTm.nome,cs.dt_consulta,p.nome,c.nome,cb.descricao,cb.percentualFROMMedicosm,Consultascs,
+Pacientesp,Convenioc,CoberturacbWHEREm.codigo_medico=cs.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioAND
+p.codigo_cobertura=cb.codigo_coberturaANDm.nomeLIKE'Drauz%'ORDERBYcs.dt_consulta,p.nome;/*ListeosmedicamentosreceitadospormÃ©dicosquenasceramantesde1960,
+mostrandoparaquaispacientesestesmedicamentosforamreceitados*/
+
+
+
+SELECTme.nome_medicamento,mc.quantidade,m.nomeAS"MÃ©dico",m.dt_nasc,p.nomeAS"Paciente"FROMMedicamentosme,Medicosm,Pacientesp,Medicamentos_consultamc,Consultascs
+WHEREme.codigo_medicamento=mc.codigo_medicamentoANDmc.codigo_consulta=cs.codigo_consultaANDcs.codigo_medico=m.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteAND
+m.dt_nasc<'01/01/1960'ORDERBYm.nome,me.nome_medicamento;/*Listeototaldeconsultaspordia*/SELECTdt_consulta,COUNT(codigo_consulta)FROMConsultasGROUPBYdt_consulta
+ORDERBYdt_consulta;/*QualamÃ©diadeconsultaspordianomÃªsdeAbrilde2021*/SELECTCAST(AVG(valor)ASNUMERIC(9,2))FROM(SELECTCOUNT(codigo_consulta)ASvalorFROMConsultasWHERE
+dt_consultaBETWEEN'01/04/2021'AND'30/04/2021'GROUPBYdt_consulta)ASmediaSELECTROUND(AVG(valor),2)FROM(SELECTCOUNT(codigo_consulta)ASvalorFROMConsultasWHEREdt_consulta
+BETWEEN'01/04/2021'AND'30/04/2021'GROUPBYdt_consulta)ASmedia/*Quaismedicamentosnuncaforamreceitados*/SELECTme.nome_medicamento,me.principio_ativo,me.reg_anvisaFROM
+MedicamentosmeLEFTJOINMedicamentos_consultamcONme.codigo_medicamento=mc.codigo_medicamentoWHEREmc.codigo_consultaISNULL;
+/*Quaisosmedicamentosreceitadosparapacientescompercentualdecoberturainferiora75%,mostreonomedomÃ©dico,adatadaconsultaeoconvÃªnio*/
+
+
+
+
+
+
+
+SELECTme.nome_medicamento,p.nome,c.nome,cb.descricao,cb.percentual,m.nome,cs.dt_consultaFROMMedicamentosme,Pacientesp,Convenioc,Coberturacb,Medicosm,Consultascs,
+Medicamentos_consultamcWHEREme.codigo_medicamento=mc.codigo_medicamentoANDmc.codigo_consulta=cs.codigo_consultaAND
+cs.codigo_medico=m.codigo_medicoANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenio=c.codigo_convenioANDp.codigo_cobertura=cb.codigo_coberturaAND
+cb.percentual<75;/*MostrequantasconsultascadapacientequetomaAspirinafezduranteoanode2021*/SELECTp.codigo_paciente,p.nome,COUNT(cs.codigo_consulta)
+FROMPacientesp,Consultascs,Medicamentosme,Medicamentos_consultamcWHEREp.codigo_paciente=cs.codigo_pacienteANDcs.codigo_consulta=mc.codigo_consultaAND
+mc.codigo_medicamento=me.codigo_medicamentoANDme.nome_medicamento='ASPIRINA'ANDcs.dt_consultaBETWEEN'01/01/2021'AND'31/12/2021'GROUPBYp.codigo_paciente;
+
+/*ComandoparalistartodasastabelasdoBanco*/SELECTtable_nameFROMinformation_schema.tablesWHEREtable_schema='public'ORDERBYtable_name;/*ListeosmedicamentosreceitadosparapacientesquenÃ£opossuemConvÃªnio*/INSERTINTOConsultasVALUES(9,'08/04/2021','ATENDIMENTOPADRÃƒO9',3,10);INSERTINTOMedicamentos_consulta
+VALUES(10,9,4),(1,9,1),(3,9,2);
+
+SELECTme.nome_medicamento,p.nomeFROMMedicamentosme,Pacientesp,Consultascs,Medicamentos_consultamcWHEREme.codigo_medicamento=mc.codigo_medicamentoAND
+mc.codigo_consulta=cs.codigo_consultaANDcs.codigo_paciente=p.codigo_pacienteANDp.codigo_convenioISNULL;/
+
+*QuaismÃ©dicosfizerammaisconsultasqueoMÃ©dicoDrauzio*/SELECT*FROM(SELECTm.nomeAS"Nome",COUNT(cs.codigo_consulta)as"Total"FROMMedicosm,ConsultascsWHERE
+m.codigo_medico=cs.codigo_medicoGROUPBYm.nome)AS"Resultado"
 WHERE"Total">(SELECTCOUNT(cs.codigo_consulta)FROMConsultascs,MedicosmWHEREcs.codigo_medico=m.codigo_medicoANDm.nomeLIKE'Drauz%');
 
 Fim do teste
