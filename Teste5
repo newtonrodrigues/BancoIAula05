@@ -1,0 +1,235 @@
+CREATE TABLE IF NOT EXISTS FILMES (
+	cod_filme INT NOT NULL PRIMARY KEY, 
+	titulo VARCHAR(40) NOT NULL,
+	emprestado BOOLEAN
+);
+
+ALTER TABLE FILMES ALTER emprestado SET DEFAULT (false);
+/*COMO INSERIR DADOS NA TABELA*/
+INSERT INTO [TABELA] ([COLUNAS]) VALUES ([VALORES]);
+
+INSERT INTO FILMES (cod_filme, titulo, emprestado)
+VALUES (1, 'Matrix', false);
+
+INSERT INTO FILMES (cod_filme, titulo)
+VALUES (2, 'Lagoa Azul');
+
+INSERT INTO FILMES (cod_filme, titulo)
+VALUES (3, 'Cidade de Deus');
+
+INSERT INTO FILMES 
+VALUES (4, 'Tropa de Elite'), (5, 'Senhor dos Anéis: A sociedade do anel');
+
+/* COMO INCLUIR UM COMENTARIO, ABAIXO, NOVA COLUNA*/
+ALTER TABLE FILMES ADD COLUMN valor NUMERIC(9,2);
+ALTER TABLE FILMES ADD COLUMN status BOOLEAN;
+/*COMO REMOVER UMA COLUNA DA TABELA*/
+ALTER TABLE FILMES DROP COLUMN valor;
+
+ALTER TABLE FILMES ALTER valor TYPE NUMERIC(19,2);
+
+ALTER TABLE FILMES RENAME valor TO vlr;
+ALTER TABLE FILMES DROP COLUMN vlr;
+
+UPDATE FILMES SET status = true WHERE titulo = 'Matrix';
+SELECT * FROM FILMES ORDER BY cod_fime; titulo DESC (ASC);
+SELECT cod_filme, emprestado, titulo FROM FILMES;
+/* ESTRUTURA BASICA DE UM SELECT */
+UPDATE FILMES SET status = true WHERE titulo = 'Matrix';
+UPDATE FILMES SET status = false WHERE status is NULL;
+
+SELECT titulo, emprestado 
+FROM FILMES
+ORDER BY emprestado, titulo;
+
+UPDATE FILMES SET emprestado = false WHERE emprestado is NULL;
+UPDATE FILMES SET vlr = 10.00 WHERE vlr is NULL;
+null != '' != ' '
+
+
+/* TABELA DE CLIENTES */
+CREATE TABLE IF NOT EXISTS CLIENTES (
+	cod_cli SERIAL,
+	nome VARCHAR(120) NOT NULL,
+	endereco VARCHAR(120) NOT NULL,
+	genero VARCHAR(1) NOT NULl,
+	data_nasc DATE NOT NULL, 
+	CHECK (genero IN ('F', 'M', 'f')),
+	CHECK (data_nasc <= now()),
+	PRIMARY KEY (cod_cli)
+);
+
+INSERT INTO CLIENTES (nome, endereco, genero, data_nasc) VALUES
+('Hulgo', 'Rua A, N 1, Casa 2', 'M', '09/04/2021');
+
+INSERT INTO CLIENTES (nome, endereco, genero, data_nasc) VALUES
+('Maria', 'Rua B, N 2, Casa 1', 'F', '04/05/2000');
+
+
+INSERT INTO CLIENTES (nome, endereco, genero, data_nasc) VALUES
+('Jose', 'Rua C, N 2, Casa 1', 'M', '08/01/1994');
+
+
+SELECT * FROM CLIENTES;
+
+SELECT genero, COUNT(cod_cli)
+FROM CLIENTES
+GROUP BY genero
+ORDER BY genero;
+
+/*Funcões de consulta*/
+COUNT()
+	SELECT genero, COUNT(cod_cli)
+	FROM CLIENTES
+	GROUP BY genero
+	ORDER BY genero;
+
+UPDATE CLIENTES SET data_nasc = '09/04/2021' WHERE cod_cli = 1;
+UPDATE CLIENTES SET data_nasc = '29/04/2021' WHERE nome = 'Hulgo';
+
+CREATE DOMAIN GENERO AS VARCHAR(1) CHECK (VALUE IN ('M', 'm', 'F', 'f' ));
+
+CREATE TABLE IF NOT EXISTS FUNCIONARIOS(
+
+	cod_func SERIAL,
+	nome VARCHAR(120) NOT NULL,
+	genero GENERO NOT NULL,
+	salario NUMERIC(9,2) NOT NULL,
+	PRIMARY KEY (cod_func),
+	CHECK (salario >= 0)
+);
+
+ALTER TABLE FUNCIONARIOS ADD COLUMN endereco VARCHAR(120) NOT NULL;
+
+INSERT INTO FUNCIONARIOS (nome, endereco, genero, salario) VALUES
+('Manuel da Silva', 'Rua 1, 2', 'm', 1090.18),
+(' Joaquim da Silva', 'Rua 1, 2', 'm', 1090.18),
+('Pasquale da Silva', 'Rua 1, 2', 'm', 1090.18),
+('Jose', 'Rua 2, 1', 'M', 2000.00);
+('Rute da Silva', 'Rua 1, 2', 'f', 5010.91),
+('Raquel da Silva', 'Rua 1, 2', 'f', 4309.82);
+
+SELECT * FROM FUNCIONARIOS;
+
+SUM()
+	SELECT genero, SUM(salario) AS "Total Folha de Pagamento"
+	FROM FUNCIONARIOS
+	GROUP BY genero;
+	;
+
+MAX()
+
+	SELECT nome, genero, data_nasc
+	FROM CLIENTES
+	WHERE data_nasc = (SELECT MAX(data_nasc) FROM CLIENTES );
+MIN()
+
+	SELECT nome, genero, data_nasc
+	FROM CLIENTES
+	WHERE data_nasc = (SELECT MIN(data_nasc) FROM CLIENTES 
+					    WHERE genero = 'F' );
+AVG()
+	
+	SELECT genero, AVG(salario) AS "Total Folha de Pagamento"
+	FROM FUNCIONARIOS
+	GROUP BY genero;
+	
+	SELECT SUM(salario)
+	FROM FUNCIONARIOS
+	WHERE 
+		genero = 'm' OR genero = 'M';
+		
+		
+CREATE TABLE IF NOT EXISTS EMPRESTIMOS (
+	cod_emprest SERIAL PRIMARY KEY,
+	cod_func INT NOT NULL REFERENCES FUNCIONARIOS(cod_func),
+	cod_cli INT NOT NULL,
+	cod_filme INT NOT NULL REFERENCES FILMES,
+	data_emp DATE NOT NULL,
+	data_prev DATE NOT NULL,
+	data_dev DATE,
+	CHECK (data_dev >= data_emp),
+	FOREIGN KEY (cod_cli) REFERENCES CLIENTES
+	
+INSERT INTO EMPRESTIMOS (cod_func, cod_cli, cod_filme, data_emp, data_prev) VALUES
+	(1, 1, 1, '01/04/2021', '05/04/2021'),
+	(1, 2, 2, '05/04/2021', '06/04/2021'),
+	(2, 3, 2, '06/04/2021', '07/04/2021'),
+	(3, 1, 4, '07/04/2021', '08/04/2021'),
+	(4, 2, 1, '09/04/2021', '12/04/2021');
+	
+UPDATE EMPRESTIMOS SET data_dev = '05/04/2021' WHERE cod_emprest = 1;
+UPDATE EMPRESTIMOS SET data_dev = '06/04/2021' WHERE cod_emprest = 2;
+UPDATE EMPRESTIMOS SET data_dev = '08/04/2021' WHERE cod_emprest = 3;
+	
+UPDATE FILMES SET emprestado = true WHERE cod_filme = 1 OR cod_filme = 4;
+
+SELECT cod_func, nome, salario
+FROM FUNCIONARIOS;
+	
+SELECT nome, endereco, salario
+FROM FUNCIONARIOS
+WHERE genero = 'm' OR genero = 'M'
+ORDER BY nome;
+	
+SELECT f.titulo AS "Títulos dos Filmes"
+FROM FILMES f, EMPRESTIMOS e
+WHERE e.data_emp = '01/04/2021' AND f.cod_filme = e.cod_filme
+ORDER BY f.titulo;
+	
+SELECT f.titulo AS "Títulos dos Filmes"
+FROM FILMES f, EMPRESTIMOS e
+WHERE e.data_emp BETWEEN '01/04/2021' AND '06/04/2021'
+AND	f.cod_filme = e.cod_filme
+ORDER BY f.titulo;
+	
+/*'f' OR c.genero = 'F'*/ 
+	
+	SELECT c.nome
+	FROM CLIENTES c, EMPRESTIMOS e
+	WHERE c.genero IN ('f', 'F') 		
+	AND e.data_emp = '06/04/2021'
+	AND c.cod_cli = e.cod_cli;
+	
+SELECT * FROM FILMES;
+SELECT * FROM FUNCIONARIOS;
+SELECT * FROM CLIENTES;
+SELECT *FROM EMPRESTIMOS ORDER BY cod_emprest;
+	
+	
+CREATE OR REPLACE VIEW RELATORIO AS	
+SELECT e.data_emp AS "Data do Emprestimo",
+	   f.titulo AS "Título do Filme", 
+	   c.nome AS "Nome do Cliente",
+	   fu.nome AS "Nome dos Funcionários",
+	   e.data_prev AS "Data para Devolução"
+FROM EMPRESTIMOS e, FILMES f, CLIENTES c, FUNCIONARIOS fu
+WHERE e.cod_filme = f.cod_filme AND 
+	  e.cod_func = fu.cod_func AND
+	  e.data_dev IS NULL;
+	
+/* Crie uma consulta que retorne quais clientes devolveram filmes com atraso */
+
+	SELECT c.nome, e.data_emp, e.data_prev, e.data_dev, f.titulo
+	FROM CLIENTES c, EMPRESTIMOS e, FILMES f
+	WHERE c.cod_cli = e.cod_cli AND e.cod_filme = f.cod_filme AND
+	e.data_prev < e.data_dev;
+	
+	/* Crie uma consulta que traga os clientes atendidos pelo funcionario jose*/
+	
+	SELECT c.nome, f.nome
+	FROM CLIENTES c, EMPRESTIMOS e, FUNCIONARIOS f
+	WHERE c.cod_cli = e.cod_cli AND 
+	e.cod_func = f.cod_func AND f.nome LIKE 'R%';
+	
+	
+	SELECT * FROM RELATORIO WHERE "Nome do Cliente" = 'Jose';
+	
+
+	
+SELECT AVG(f.salario) 
+FROM FUNCIONARIOS f, EMPRESTIMOS e
+WHERE f.cod_func = e.cod_func;
+AND e.data_emp BETWEEN '01/04/2021' AND '30/04/2021';
+
+SELECT COUNT(cod_cli) AS "Total de Clientes" FROM CLIENTES
